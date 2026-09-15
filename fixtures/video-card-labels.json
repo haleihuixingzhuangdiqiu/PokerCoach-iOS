@@ -1,0 +1,14 @@
+{
+  "source": "11111.mp4",
+  "scope": "同一视频中不同于模板来源的帧；不是独立牌面主题泛化测试。t030 对 2 的拒绝曾用于发现模板覆盖缺口，加入 t031 模板后再次回归。",
+  "frames": {
+    "t012.png": {"hero.0":"Kh","hero.1":"Qs"},
+    "t022.png": {"hero.0":"Kh","hero.1":"Qs","board.0":"7h","board.1":"Qd","board.2":"Ks"},
+    "t030.png": {"hero.0":"Kh","hero.1":"Qs","board.0":"7h","board.1":"Qd","board.2":"Ks","board.3":"2s"},
+    "t043.png": {"hero.0":"Th","hero.1":"3h"},
+    "t058.png": {"hero.0":"Td","hero.1":"7c"},
+    "t065.png": {"hero.0":"Td","hero.1":"7c","board.0":"8h","board.1":"Qh","board.2":"Jc"},
+    "t090.png": {"hero.0":"Qs","hero.1":"Qc"},
+    "t115.png": {"hero.0":"Qs","hero.1":"Qc","board.0":"Ks","board.1":"4h","board.2":"3h","board.3":"9d","board.4":"4d"}
+  }
+}

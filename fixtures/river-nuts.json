@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "table": {
+    "seats": [
+      {"id": 0, "stack": 400, "committed": 100, "streetCommitted": 0, "folded": false},
+      {"id": 1, "stack": 300, "committed": 200, "streetCommitted": 100, "folded": false, "actedAtBet": 100},
+      {"id": 2, "stack": 100, "committed": 100, "streetCommitted": 0, "folded": false}
+    ],
+    "board": ["Qs", "Js", "Ts", "2d", "3h"],
+    "bigBlind": 10,
+    "button": 0,
+    "currentBet": 100,
+    "lastFullRaise": 100,
+    "pending": [0, 2]
+  },
+  "hero": 0,
+  "holeCards": "AsKs",
+  "ranges": {"1": "QQ,JJ,TT,99,AQo", "2": "random"},
+  "samples": 2000,
+  "milliseconds": 5000
+}

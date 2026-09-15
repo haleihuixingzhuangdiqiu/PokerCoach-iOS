@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "table": {
+    "seats": [
+      {
+        "id": 0,
+        "stack": 900,
+        "committed": 100,
+        "streetCommitted": 0,
+        "folded": false
+      },
+      {
+        "id": 1,
+        "stack": 900,
+        "committed": 100,
+        "streetCommitted": 0,
+        "folded": false
+      },
+      {
+        "id": 2,
+        "stack": 900,
+        "committed": 100,
+        "streetCommitted": 0,
+        "folded": false
+      },
+      {
+        "id": 3,
+        "stack": 900,
+        "committed": 100,
+        "streetCommitted": 0,
+        "folded": false
+      },
+      {
+        "id": 4,
+        "stack": 900,
+        "committed": 100,
+        "streetCommitted": 0,
+        "folded": false
+      },
+      {
+        "id": 5,
+        "stack": 700,
+        "committed": 300,
+        "streetCommitted": 200,
+        "folded": false,
+        "actedAtBet": 200
+      }
+    ],
+    "board": [
+      "Qs",
+      "8s",
+      "5d"
+    ],
+    "bigBlind": 20,
+    "button": 4,
+    "currentBet": 200,
+    "lastFullRaise": 200,
+    "pending": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "hero": 0,
+  "holeCards": "AsKs",
+  "ranges": {
+    "1": "66+,ATs+,KQs,QJs,JTs,T9s",
+    "2": "66+,ATs+,KQs,QJs,JTs,T9s",
+    "3": "random",
+    "4": "random",
+    "5": "QQ+,88,55,AQs,KQs,QJs,JTs"
+  },
+  "samples": 2000,
+  "milliseconds": 5000
+}
