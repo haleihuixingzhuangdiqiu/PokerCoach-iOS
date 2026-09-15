@@ -1,0 +1,62 @@
+{
+  "frozenAtUTC": "2026-09-15T22:19:01.522202+00:00",
+  "version": "0.1.13",
+  "sourceSHA256": "f0524ef20b848abee0d89de79a858680d36cfd474f80128e5c65bb82d0aebc25",
+  "files": {
+    "Sources/PokerCoachCore/Betting.swift": "037ea54eca247f7d26151bec1b83d22acbe04da1fc48e207bc80ac38935e87ad",
+    "Sources/PokerCoachCore/BettingAmountSupport.swift": "3153b8828309a2b74480a1eef384690ecc4ea05a7e552716b976ecb08a9a7caa",
+    "Sources/PokerCoachCore/CaptureActivityMonitor.swift": "4574b66ce768af1d58c2733797e172b4616f344c5bcc438b4e8ccad19246b970",
+    "Sources/PokerCoachCore/CaptureConnectionState.swift": "5e66261b031924aeeab79c61d459824e211f22747864ffbd99923468ffa71e0d",
+    "Sources/PokerCoachCore/Cards.swift": "9b67038c5a9d77a30c302bbea691501ba09a7aaae87d43347dc031adde67de9a",
+    "Sources/PokerCoachCore/Decision.swift": "be3c65e4da91fdf3edaf7cf6fe6d2d44d993bfbae6d95d57db61c0904c7efdb6",
+    "Sources/PokerCoachCore/EmptyBoardGate.swift": "14d64e3b59152eb8cf86e39a672e508721b511c19e88dc611938d8b2315a824c",
+    "Sources/PokerCoachCore/Equity.swift": "194f35269a543b7e906005fa1364c2c175f45ba20318da57d8433d18e7e93083",
+    "Sources/PokerCoachCore/FullHandDecision.swift": "e141541bce3b63d770f48b293ab66d11a114159dc6be9998777f67b03d2d24a8",
+    "Sources/PokerCoachCore/FullHandGuidance.swift": "ef283a096c302678d7780b57160d9d952a7959a6d5e6d092c7f38603fbc7e226",
+    "Sources/PokerCoachCore/GuidanceRenderSchedule.swift": "90f2c563591c3ad4e181c1a554e0232db4cafd512d6741c6f1c88a24e7876d50",
+    "Sources/PokerCoachCore/LiveCardAnalysis.swift": "f0e0f1a32aa5fc481aeb38dcc961727f1f40b557582e51d433ed9aaf7cea67e2",
+    "Sources/PokerCoachCore/LiveCardGate.swift": "887ee6d9f62790763f2e29d712135c850998d0a93b034a0e54d4b2e278beac18",
+    "Sources/PokerCoachCore/LiveDecisionGate.swift": "6f204f399643097cb49c68b0b4f205bd7e0d3e6bc2661901e8a220c4dc9d5a5f",
+    "Sources/PokerCoachCore/LiveFullStrategy.swift": "9ae4636c863b44d702269f5c49d8e170141005454303b675a89dd5162a918f26",
+    "Sources/PokerCoachCore/Observation.swift": "3d2c912fa48763f6fadfd0d070ec967e8a3aadaccd6e42bd677d4e4e54446c31",
+    "Sources/PokerCoachCore/OpeningSnapshotRangeModel.swift": "69d0d3163f0f66a1dc16bb9fc393afa0059bad204cb723bdac65c70fb34e0076",
+    "Sources/PokerCoachCore/OpeningSnapshotReconstructor.swift": "719c5eec3a26dcbf290b510c3ff5aa4e3382080ee3518275719897b498012875",
+    "Sources/PokerCoachCore/PlainCardLanguage.swift": "2ba5f1551787728882384f2e341291b392170034fc920083c42d819f8779ba55",
+    "Sources/PokerCoachCore/PokerGameRules.swift": "ddd8ba2542e7f9f1fb6916744eb9d317911edee8f3807f6a8e4c2bd57105b3dd",
+    "Sources/PokerCoachCore/ProgressiveAnalysis.swift": "1fef5fb44a8b74239dcf2c3c82ed0d159c5f5edb60e0b7eb781b051df36da3c5",
+    "Sources/PokerCoachCore/PublicActionRangeModel.swift": "29de43f3729e9e0545622744b72d7e7316f11f065e170d20bb5e5b6ea9e28b16",
+    "Sources/PokerCoachCore/PublicHandLedger.swift": "deaf4d18ff1da0d85cff756b7e5af4627919652c26f06257642f434a73dc456a",
+    "Sources/PokerCoachCore/Ranges.swift": "bdddba779c68813ab11f8cd99f8fc238abd96ff680719e79b91fde2dcaf8862a",
+    "Sources/PokerCoachCore/RelativeHandStrength.swift": "3ed66f0bfa4c5538fa9f7efd92309a8b86daa72fce16764e626b90bc2de7b16f",
+    "Sources/PokerCoachCore/ResearchDecision.swift": "d8d52f9abac04ee0eb31f31cf75030d16612a6e769fcafd0ae955ff16833c1a6",
+    "Sources/PokerCoachCore/ResearchStrategySummary.swift": "43f44797dfa81c317f4f26cb2d5be1b71c6e5dc51e0e3a18cc4496c80911860f",
+    "Sources/PokerCoachCore/ScanScheduler.swift": "5fb17c5076da1225d998782c39ba4c966cfbc497a4d1ce1300122d726f16dea8",
+    "tools/benchmark_strategy.swift": "894d3da6e98a88a47e21dc5c9ba05fb2ba936177c388365fdb7184e112294daf"
+  },
+  "evaluation": {
+    "pairs": 192,
+    "independentDeals": 24,
+    "players": 8,
+    "seed": 20261017,
+    "samplesPerDecision": 256,
+    "failureBudgetMilliseconds": 10000,
+    "smallBlind": 20,
+    "bigBlind": 50,
+    "mandatoryUTGStraddle": 100,
+    "initialStackEach": 5000,
+    "potFractions": [
+      0.5,
+      1
+    ],
+    "baselineHero": "tightValue",
+    "opponents": [
+      "callingStation",
+      "tightValue",
+      "pressure"
+    ],
+    "rake": 0,
+    "trainedModel": false,
+    "judge": "production Swift; conservation checked; not independent oracle"
+  },
+  "binarySHA256": "7ec850adbb20d953eb8aaf7d8fe0789bb77970112a4cc0c9b2f016da664a2890"
+}

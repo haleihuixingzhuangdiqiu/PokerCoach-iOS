@@ -90,7 +90,7 @@ public final class WPKTableSnapshotReader {
         CGRect(x: 409, y: 178, width: 105, height: 42), CGRect(x: 508, y: 318, width: 104, height: 43),
         CGRect(x: 508, y: 580, width: 104, height: 43), CGRect(x: 508, y: 865, width: 104, height: 43),
         CGRect(x: 117, y: 865, width: 104, height: 43), CGRect(x: 117, y: 580, width: 104, height: 43),
-        CGRect(x: 117, y: 318, width: 104, height: 43), CGRect.zero
+        CGRect(x: 117, y: 318, width: 104, height: 43), CGRect(x: 205, y: 1154, width: 107, height: 43)
     ]
     private static let markers: [CGRect] = [
         CGRect(x: 345, y: 328, width: 37, height: 36), CGRect(x: 535, y: 358, width: 36, height: 36),
@@ -320,7 +320,13 @@ public final class WPKTableSnapshotReader {
         guard let bytes = pixels(image, rect: rect, width: 24, height: 12) else { return false }
         return stride(from: 0, to: bytes.count, by: 4).filter { p in
             let r = Int(bytes[p]), g = Int(bytes[p + 1]), b = Int(bytes[p + 2])
-            return b > 100 && r > g * 2 && b > g * 2
+            // The real Straddle pill fades from violet to blue-violet. Its
+            // lighter half has r only slightly above g; requiring r > 2g
+            // drops whole labels even when the literal word is readable.
+            // This only selects an OCR candidate; exact Straddle text at
+            // confidence >= 0.9 is still required to publish the seat.
+            return b > 100 && ((r > g * 2 && b > g * 2)
+                || (r * 100 > g * 110 && b * 100 > r * 140 && b * 100 > g * 160))
         }.count >= 35
     }
     private static func darkOverlay(_ image: CGImage, rect: CGRect) -> Bool {

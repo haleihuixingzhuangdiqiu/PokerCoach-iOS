@@ -10,7 +10,7 @@
 
 运行 `swift test -c release` 可以验证规则、概率、范围更新、状态机、模拟策略、合成图像和传输逻辑。依赖私人图像的用例发现素材缺失时使用 `XCTSkip`，**跳过不等于识别通过**。
 
-涉及私人帧的测试分布在 `AceTemplateCoverageTests`、`GenuineFiveSixCoverageTests`、`RankGlyphIsolationTests`、`RankLearningIntegrationTests`、`ActionControlReaderTests`、`VisibleRaiseCaptureTests`、`SceneGateTests`、`HeroSettlementTests`、`EmptyBoardPresenceTests` 和 `TableSnapshotCaptureTests`。这些类中的纯逻辑／合成图测试仍可运行。
+涉及私人帧的测试分布在 `AceTemplateCoverageTests`、`GenuineFiveSixCoverageTests`、`RankGlyphIsolationTests`、`RankLearningIntegrationTests`、`ActionControlReaderTests`、`VisibleRaiseCaptureTests`、`SceneGateTests`、`HeroSettlementTests`、`EmptyBoardPresenceTests`、`TableSnapshotCaptureTests` 和 `StraddleCaptureRegressionTests`。这些类中的纯逻辑／合成图测试仍可运行。
 
 通过环境变量接入自己持有的本地资料：
 

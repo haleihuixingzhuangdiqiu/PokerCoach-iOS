@@ -69,6 +69,9 @@ enum StrengthFeature {
                        + (hi - lo == 1 ? 0.035 : 0))
         }
         let all = hand.cards + board, value = HandEvaluator.value(all)
+        if board.count == 5, RiverNutsPolicyGuard.isCertainlyUnbeatable(hand: hand, board: board, value: value) {
+            return 1
+        }
         var feature = [0.16, 0.43, 0.64, 0.77, 0.85, 0.90, 0.96, 0.985, 0.995][value.category.rawValue]
         let boardHigh = board.map(\.rank).max()!
         if value.category == .highCard { feature += Double(hi - 2) * 0.012 }
@@ -94,6 +97,54 @@ enum StrengthFeature {
             if (1...10).contains(where: { low in (low..<(low + 5)).filter { ranks.contains($0) }.count == 4 }) { feature += 0.035 }
         }
         return min(0.999, max(0.01, feature))
+    }
+}
+
+/// Sufficient river-only constraints, not a complete nuts classifier or an equity estimate.
+/// Uses only this seat's cards and the public board. At most ten five-rank windows
+/// are checked; no 990-combination evaluation is performed in sampled rollouts.
+enum RiverNutsPolicyGuard {
+    static func isCertainlyUnbeatable(hand: HoleCards, board: [Card], value: HandValue) -> Bool {
+        guard board.count == 5, value.category.rawValue >= HandCategory.straight.rawValue else { return false }
+        if SharedRiverNuts.isUnbeatable(board) { return true }
+        let high = (value.score >> 16) & 15
+        if value.category == .straightFlush { return high == 14 }
+        let ranks = Dictionary(grouping: board, by: \.rank).mapValues(\.count)
+        let suits = Dictionary(grouping: board, by: \.suit).mapValues(\.count)
+        let maxSuitCount = suits.values.max()!
+        if value.category == .straight {
+            // With no public pair or three-card suit, no boat/quads/flush is
+            // possible; Broadway is therefore unbeatable, though it can tie.
+            return high == 14 && ranks.count == 5 && maxSuitCount <= 2
+        }
+        if value.category == .quads {
+            // Exclude possible straight flushes and a second public pair that
+            // could give an opponent different quads. A private quad card blocks
+            // anyone from matching this quad; public quads require the top kicker.
+            guard maxSuitCount <= 2, ranks.filter({ $0.value >= 2 }).allSatisfy({ $0.key == high }) else { return false }
+            if (ranks[high] ?? 0) < 4 { return true }
+            return ((value.score >> 12) & 15) == (high == 14 ? 13 : 14)
+        }
+        if value.category == .flush, ranks.count == 5,
+           let ace = hand.cards.first(where: { $0.rank == 14 && (suits[$0.suit] ?? 0) >= 3 }) {
+            // A private ace beats every other flush in this suit. An unpaired
+            // board excludes boats/quads; explicitly exclude possible straight flushes.
+            let publicMask = board.reduce(UInt64(0)) { $0 | $1.mask }
+            for top in 5...14 {
+                var needed = 0, possible = true
+                for offset in 0..<5 {
+                    let rawRank = top - offset, rank = rawRank == 1 ? 14 : rawRank
+                    let mask = Card(unchecked: (rank - 2) * 4 + ace.suit).mask
+                    if publicMask & mask == 0 {
+                        if hand.mask & mask != 0 { possible = false; break }
+                        needed += 1
+                    }
+                }
+                if possible && needed <= 2 { return false }
+            }
+            return true
+        }
+        return false
     }
 }
 

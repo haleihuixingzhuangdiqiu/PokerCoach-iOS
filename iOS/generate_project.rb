@@ -21,8 +21,8 @@ tests = project.new_target(:ui_test_bundle, 'PokerCoachUITests', :ios, '17.0')
   target.build_configurations.each do |c|
     c.build_settings.merge!({
       'PRODUCT_BUNDLE_IDENTIFIER' => bundle, 'DEVELOPMENT_TEAM' => team,
-      'CODE_SIGN_STYLE' => 'Automatic', 'CURRENT_PROJECT_VERSION' => '13',
-      'MARKETING_VERSION' => '0.1.12', 'TARGETED_DEVICE_FAMILY' => '1',
+      'CODE_SIGN_STYLE' => 'Automatic', 'CURRENT_PROJECT_VERSION' => '14',
+      'MARKETING_VERSION' => '0.1.13', 'TARGETED_DEVICE_FAMILY' => '1',
       'SWIFT_VERSION' => '5.0', 'ENABLE_USER_SCRIPT_SANDBOXING' => 'YES',
       'LD_RUNPATH_SEARCH_PATHS' => ['$(inherited)', '@executable_path/Frameworks'],
       'GENERATE_INFOPLIST_FILE' => 'NO'

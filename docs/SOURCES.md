@@ -33,3 +33,16 @@
 - [Apple：立即显示的逐样本标记](https://developer.apple.com/documentation/coremedia/kcmsampleattachmentkey_displayimmediately)：不规则状态更新使用 sample attachment 请求立即显示。
 - [Apple：视频样本入队](https://developer.apple.com/documentation/avfoundation/avsamplebufferdisplaylayer/enqueue(_:))：iOS 17 起使用 `sampleBufferRenderer`，不混用两套入队接口。
 - [Apple：IOSurface 像素缓冲区属性](https://developer.apple.com/documentation/corevideo/kcvpixelbufferiosurfacepropertieskey)，结合本机 SDK 头文件与真机前后对照验证。
+
+## 屏幕读取产品复核
+
+2026-09-16 继续核查以下作者仓库。这里借鉴的是拆分识别、状态恢复、决策和验收的工程方法，没有复制源码或装入第三方模型。
+
+| 项目 | 可用思路与限制 |
+| --- | --- |
+| [PyPokerBot](https://github.com/gbencke/PyPokerBot) | 截图采集、区域检测、OCR、HUD 分层；作者明确其策略为简单决策树，不能作为强度证明。桌面 Win32/Python 架构也不能直接当作 iOS 插件。 |
+| [Poker](https://github.com/dickreuter/Poker) | 图形化桌面区域适配、OpenCV/神经网络识别、蒙特卡洛权益；可借鉴把主题校准与策略分开。GPL-3.0 项目，本轮未复制代码，也未独立复现其盈利表现。 |
+| [pokertv](https://github.com/BrunoPradoBR/pokertv) | 分区图像分类、OCR 去抖、状态机生成牌谱。适合对照“单帧字段 → 连续事件”的设计；需要自行训练并放入模型，不能据 README 认定已覆盖目标桌面。 |
+| [PokerScreenBot](https://github.com/Vlad-Boyar/PokerScreenBot) | 提供屏幕管线的基础结构，但公开仓库明确排除模型及 solver 数据；不是完整可运行强策略的权重来源。 |
+
+本次由录像证实的缺陷是本工程遗漏了本人座位的第三盲标签区域，并漏掉了该标签的蓝紫色渐变。已补实际区域和颜色候选，同时仍要求读到明确的 `Straddle` 字样；不能用“看见下注 1”替代桌规证据。策略项目的权重、许可与适用人数另见 [本轮研究报告](STRATEGY-RESEARCH-2026-09-16.md)，规则恢复见 [恢复研究](RECOVERY-RESEARCH.md)。

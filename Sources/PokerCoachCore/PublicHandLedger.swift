@@ -279,10 +279,24 @@ public struct PublicHandLedger: Sendable {
             && (!initial.seats[$0].folded || target.seats[$0].folded == true) }) else {
             return (nil, "筹码或弃牌状态与本手记录冲突")
         }
-        // With two chip-paying players between captures, hidden intermediate raises can
-        // produce the same endpoint but different last-full-raise/reopening rights.
-        // Endpoint-only search cannot prove their absence. Wait for a new verified hand.
-        guard target.seats.indices.filter({ target.seats[$0].stack! < initial.seats[$0].stack }).count <= 1 else {
+        // Multiple payers usually leave hidden intermediate raises unresolved. The
+        // exception is a conserved SAME-street endpoint entirely at/below the already
+        // verified current bet: live wagers cannot decrease, so any intervening raise
+        // would leave at least one wager above that bound. Short capped calls also
+        // satisfy this proof; they do not change the current bet or reopening rights.
+        // Require two live funded players at the endpoint to exclude an uncalled
+        // raise refunded after folds/capped all-in calls erase its visible amount.
+        // The search below must still prove the exact action order/path and may not
+        // certify a truncated search. Do not extend this exception across streets.
+        let paid = target.seats.indices.map { initial.seats[$0].stack - target.seats[$0].stack! }
+        let passiveSameStreet = target.board == initial.board
+            && target.seats.filter({ $0.folded == false && $0.stack! > 0 }).count >= 2
+            && target.seats.indices.allSatisfy { i in
+                let before = initial.seats[i].streetCommitted, after = target.seats[i].streetWager!
+                return after >= before && after <= initial.currentBet && after - before == paid[i]
+            }
+            && target.pot == initial.pot + paid.reduce(0, +)
+        guard paid.filter({ $0 > 0 }).count <= 1 || passiveSameStreet else {
             return (nil, "两次画面间多名玩家投入，缺少中间加注记录")
         }
         var queue = [Node(state: initial, actions: [], depth: 0)], cursor = 0
