@@ -32,7 +32,7 @@ final class SmokeTests: XCTestCase {
         XCTAssertTrue(app.buttons["help.done"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts["未成对／高牌"].isHittable)
         XCTAssertTrue(app.staticTexts["同花顺"].isHittable)
-        let amountMeaning = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "建议：跟注 3.20＝")).firstMatch
+        let amountMeaning = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "跟 3.20＝")).firstMatch
         XCTAssertTrue(amountMeaning.isHittable, "The amount explanation must fit without scrolling")
         attach(app, name: "plain-language-help")
     }
@@ -40,6 +40,7 @@ final class SmokeTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         XCTAssertTrue(app.staticTexts["home.title"].waitForExistence(timeout: 10))
+        XCTAssertEqual(app.buttons.matching(identifier: "capture.start").count, 1)
         XCTAssertTrue(app.buttons["capture.start"].isHittable)
         XCTAssertTrue(app.buttons["help.open"].isHittable)
         XCTAssertFalse(app.buttons["demo.run"].exists)

@@ -1,0 +1,131 @@
+{
+  "phoneDefaultChanged": false,
+  "results": [
+    {
+      "players": 8,
+      "straddle": true,
+      "seed": 4511708,
+      "completedPairs": 384,
+      "independentDeals": 48,
+      "pairedDifferenceBBPer100": 639.4427083333333,
+      "pairedApprox95BBPer100": [
+        23.713204156498247,
+        1255.1722125101683
+      ],
+      "aiTotals": {
+        "attemptedHands": 384,
+        "completeComputeBudgets": 889,
+        "completedHands": 384,
+        "engineDecisions": 889,
+        "ledgerFallbacks": 0,
+        "rejectedIllegalActions": 0,
+        "rejectedIncompleteBudgets": 0,
+        "rejectedOther": 0
+      },
+      "baselineTotals": {
+        "attemptedHands": 384,
+        "completeComputeBudgets": 768,
+        "completedHands": 384,
+        "engineDecisions": 768,
+        "ledgerFallbacks": 0,
+        "rejectedIllegalActions": 0,
+        "rejectedIncompleteBudgets": 0,
+        "rejectedOther": 0
+      },
+      "name": "eight-straddle",
+      "approxSimultaneous95BBPer100": [
+        -112.62055449912077,
+        1391.5059711657873
+      ],
+      "rawSHA256": "e78a46e2c8db8f926281fcf8a675097219b30ad6da20c0d1c2fa05699970e78f",
+      "archive": "eight-straddle.json.gz"
+    },
+    {
+      "players": 6,
+      "straddle": false,
+      "seed": 4511706,
+      "completedPairs": 192,
+      "independentDeals": 32,
+      "pairedDifferenceBBPer100": 335.10416666666674,
+      "pairedApprox95BBPer100": [
+        -251.38841373461017,
+        921.5967470679436
+      ],
+      "aiTotals": {
+        "attemptedHands": 192,
+        "completeComputeBudgets": 488,
+        "completedHands": 192,
+        "engineDecisions": 488,
+        "ledgerFallbacks": 0,
+        "rejectedIllegalActions": 0,
+        "rejectedIncompleteBudgets": 0,
+        "rejectedOther": 0
+      },
+      "baselineTotals": {
+        "attemptedHands": 192,
+        "completeComputeBudgets": 430,
+        "completedHands": 192,
+        "engineDecisions": 430,
+        "ledgerFallbacks": 0,
+        "rejectedIllegalActions": 0,
+        "rejectedIncompleteBudgets": 0,
+        "rejectedOther": 0
+      },
+      "name": "six-normal",
+      "approxSimultaneous95BBPer100": [
+        -381.24858344766494,
+        1051.4569167809984
+      ],
+      "rawSHA256": "56f4bbaf9b73a686ae1e33e1347d0b6f99cac6d81e930f8b5c7b995065c8bb06",
+      "archive": "six-normal.json.gz"
+    },
+    {
+      "players": 2,
+      "straddle": false,
+      "seed": 4511702,
+      "completedPairs": 64,
+      "independentDeals": 32,
+      "pairedDifferenceBBPer100": -6.25,
+      "pairedApprox95BBPer100": [
+        -22.566859972275264,
+        10.066859972275264
+      ],
+      "aiTotals": {
+        "attemptedHands": 64,
+        "completeComputeBudgets": 193,
+        "completedHands": 64,
+        "engineDecisions": 193,
+        "ledgerFallbacks": 0,
+        "rejectedIllegalActions": 0,
+        "rejectedIncompleteBudgets": 0,
+        "rejectedOther": 0
+      },
+      "baselineTotals": {
+        "attemptedHands": 64,
+        "completeComputeBudgets": 191,
+        "completedHands": 64,
+        "engineDecisions": 191,
+        "ledgerFallbacks": 0,
+        "rejectedIllegalActions": 0,
+        "rejectedIncompleteBudgets": 0,
+        "rejectedOther": 0
+      },
+      "name": "heads-up",
+      "approxSimultaneous95BBPer100": [
+        -26.179710801068467,
+        13.679710801068467
+      ],
+      "rawSHA256": "0ffe2c70aad69a409838d5ccbdd8a26f6f76774566c2c242d734d46192f3e9b8",
+      "archive": "heads-up.json.gz"
+    }
+  ],
+  "multipleComparisonMethod": "Descriptive Bonferroni normal approximation for three prespecified conditions; not a human-strength claim",
+  "independentAudit": {
+    "sourceHashes": 29,
+    "uniqueDealSeeds": 112,
+    "pairedRotations": 640,
+    "decisionTraces": 2959,
+    "overlapWithTrainingSeeds": 0,
+    "status": "passed"
+  }
+}

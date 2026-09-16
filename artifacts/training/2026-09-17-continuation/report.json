@@ -1,0 +1,117 @@
+{
+  "automaticPhoneActivation" : false,
+  "chipConservationFailures" : 0,
+  "elapsedSeconds" : 3.9808750416850671,
+  "experiment" : "synthetic-continuation-v1",
+  "finalists" : [
+    {
+      "aggression" : 1.3999999999999999,
+      "callOffset" : -0.10000000000000001,
+      "id" : "c6"
+    },
+    {
+      "aggression" : 2,
+      "callOffset" : -0.10000000000000001,
+      "id" : "c7"
+    },
+    {
+      "aggression" : 2,
+      "callOffset" : 0,
+      "id" : "c11"
+    },
+    {
+      "aggression" : 0.80000000000000004,
+      "callOffset" : 0,
+      "id" : "c9"
+    }
+  ],
+  "illegalActions" : 0,
+  "limitations" : [
+    "Only two continuation-policy parameters were fitted; this does not train or validate the full search engine, opponent ranges, card recognition or equity estimator.",
+    "No real human histories were used. Scripted opponents are weak, frozen, independent of production StrengthFeature\/BehaviorProfile; gains exploit this declared mixture.",
+    "Train\/validation\/test use disjoint independent deal seeds; test was evaluated once after selection. Rotations within a deal are dependent and treated as a single cluster.",
+    "Interval is an approximate fixed-sample stratified cluster bootstrap, conditional on this opponent\/scenario generator; not a guarantee for unseen opponent populations.",
+    "Hero policy uses production StrengthFeature without current-street RelativeHandStrength override; the deployed search can use that override and is a different policy.",
+    "Public state and own hole cards only enter policy functions. Deck\/runout remain in the environment. Different branches can reach different actor-local random indices.",
+    "Production rules\/evaluator\/settlement are reused. Every action is applied and state-validated and chips are conserved; this is not an independent rules oracle.",
+    "No rake, tournament ICM, psychological inference, timing features or hidden-information access. No model was deployed to the phone.",
+    "A positive synthetic gate only nominates an offline candidate; full-engine paired evaluation and consenting held-out human data are still required."
+  ],
+  "neutral" : {
+    "aggression" : 0.80000000000000004,
+    "callOffset" : 0,
+    "id" : "c9"
+  },
+  "promotionRule" : "Validation mean > 0; fixed held-out test stratified cluster-bootstrap 95% lower endpoint > 0; means nonnegative in p6-ordinary,p8-ordinary,p8-straddle; zero legality\/conservation errors. This gates only synthetic continuation research, never automatic phone deployment.",
+  "selected" : {
+    "aggression" : 2,
+    "callOffset" : 0,
+    "id" : "c11"
+  },
+  "source" : {
+    "baseCommit" : "d5b07baab0b605532e1250fcf9b889c8c60ad6a8",
+    "files" : {
+      "Sources\/PokerCoachCore\/Betting.swift" : "037ea54eca247f7d26151bec1b83d22acbe04da1fc48e207bc80ac38935e87ad",
+      "Sources\/PokerCoachCore\/BettingAmountSupport.swift" : "3153b8828309a2b74480a1eef384690ecc4ea05a7e552716b976ecb08a9a7caa",
+      "Sources\/PokerCoachCore\/CaptureActivityMonitor.swift" : "4574b66ce768af1d58c2733797e172b4616f344c5bcc438b4e8ccad19246b970",
+      "Sources\/PokerCoachCore\/CaptureConnectionState.swift" : "5e66261b031924aeeab79c61d459824e211f22747864ffbd99923468ffa71e0d",
+      "Sources\/PokerCoachCore\/Cards.swift" : "9b67038c5a9d77a30c302bbea691501ba09a7aaae87d43347dc031adde67de9a",
+      "Sources\/PokerCoachCore\/Decision.swift" : "be3c65e4da91fdf3edaf7cf6fe6d2d44d993bfbae6d95d57db61c0904c7efdb6",
+      "Sources\/PokerCoachCore\/EmptyBoardGate.swift" : "14d64e3b59152eb8cf86e39a672e508721b511c19e88dc611938d8b2315a824c",
+      "Sources\/PokerCoachCore\/Equity.swift" : "194f35269a543b7e906005fa1364c2c175f45ba20318da57d8433d18e7e93083",
+      "Sources\/PokerCoachCore\/FullHandDecision.swift" : "e141541bce3b63d770f48b293ab66d11a114159dc6be9998777f67b03d2d24a8",
+      "Sources\/PokerCoachCore\/FullHandGuidance.swift" : "ef283a096c302678d7780b57160d9d952a7959a6d5e6d092c7f38603fbc7e226",
+      "Sources\/PokerCoachCore\/GuidanceRenderSchedule.swift" : "90f2c563591c3ad4e181c1a554e0232db4cafd512d6741c6f1c88a24e7876d50",
+      "Sources\/PokerCoachCore\/LiveCardAnalysis.swift" : "f0e0f1a32aa5fc481aeb38dcc961727f1f40b557582e51d433ed9aaf7cea67e2",
+      "Sources\/PokerCoachCore\/LiveCardGate.swift" : "887ee6d9f62790763f2e29d712135c850998d0a93b034a0e54d4b2e278beac18",
+      "Sources\/PokerCoachCore\/LiveDecisionGate.swift" : "6f204f399643097cb49c68b0b4f205bd7e0d3e6bc2661901e8a220c4dc9d5a5f",
+      "Sources\/PokerCoachCore\/LiveFullStrategy.swift" : "9ae4636c863b44d702269f5c49d8e170141005454303b675a89dd5162a918f26",
+      "Sources\/PokerCoachCore\/Observation.swift" : "3d2c912fa48763f6fadfd0d070ec967e8a3aadaccd6e42bd677d4e4e54446c31",
+      "Sources\/PokerCoachCore\/OpeningSnapshotRangeModel.swift" : "69d0d3163f0f66a1dc16bb9fc393afa0059bad204cb723bdac65c70fb34e0076",
+      "Sources\/PokerCoachCore\/OpeningSnapshotReconstructor.swift" : "719c5eec3a26dcbf290b510c3ff5aa4e3382080ee3518275719897b498012875",
+      "Sources\/PokerCoachCore\/PlainCardLanguage.swift" : "2ba5f1551787728882384f2e341291b392170034fc920083c42d819f8779ba55",
+      "Sources\/PokerCoachCore\/PokerGameRules.swift" : "ddd8ba2542e7f9f1fb6916744eb9d317911edee8f3807f6a8e4c2bd57105b3dd",
+      "Sources\/PokerCoachCore\/ProgressiveAnalysis.swift" : "1fef5fb44a8b74239dcf2c3c82ed0d159c5f5edb60e0b7eb781b051df36da3c5",
+      "Sources\/PokerCoachCore\/PublicActionRangeModel.swift" : "29de43f3729e9e0545622744b72d7e7316f11f065e170d20bb5e5b6ea9e28b16",
+      "Sources\/PokerCoachCore\/PublicHandLedger.swift" : "deaf4d18ff1da0d85cff756b7e5af4627919652c26f06257642f434a73dc456a",
+      "Sources\/PokerCoachCore\/Ranges.swift" : "bdddba779c68813ab11f8cd99f8fc238abd96ff680719e79b91fde2dcaf8862a",
+      "Sources\/PokerCoachCore\/RelativeHandStrength.swift" : "3ed66f0bfa4c5538fa9f7efd92309a8b86daa72fce16764e626b90bc2de7b16f",
+      "Sources\/PokerCoachCore\/ResearchDecision.swift" : "d8d52f9abac04ee0eb31f31cf75030d16612a6e769fcafd0ae955ff16833c1a6",
+      "Sources\/PokerCoachCore\/ResearchStrategySummary.swift" : "43f44797dfa81c317f4f26cb2d5be1b71c6e5dc51e0e3a18cc4496c80911860f",
+      "Sources\/PokerCoachCore\/ScanScheduler.swift" : "5fb17c5076da1225d998782c39ba4c966cfbc497a4d1ce1300122d726f16dea8",
+      "tools\/run_continuation_training.sh" : "a5809b19f50b0d3653968f5ec35d851400d8695c55e9ef6004bc1d441b865afb",
+      "tools\/train_continuation.swift" : "b61587bf893859bdaf445845e852305e0ed58f54b89b42338b52066c46da7ab2"
+    },
+    "sha256" : "61116a721dc76f97f756b5f36eead5ae1907797138592f6c09cdaeb7a45877d9",
+    "swiftVersion" : "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0"
+  },
+  "syntheticPromotionGatePassed" : true,
+  "testApprox95StratifiedClusterBootstrapBBPer100" : [
+    13.991477554563495,
+    34.638782965443134
+  ],
+  "testHeroDecisions" : 18973,
+  "testIndependentDeals" : 1536,
+  "testObservedAllInTransitions" : 5583,
+  "testPairedDifferenceBBPer100" : 24.173596643518522,
+  "testPairedRotations" : 8960,
+  "testScenarioMeansBBPer100" : {
+    "p2-ordinary" : 9.6796874999999982,
+    "p3-ordinary" : -3.3802083333333344,
+    "p3-straddle" : 13.822916666666663,
+    "p4-ordinary" : 27.671874999999989,
+    "p5-ordinary" : 28.087500000000006,
+    "p6-ordinary" : 33.236979166666664,
+    "p6-straddle" : 7.7630208333333321,
+    "p7-ordinary" : 29.703125000000004,
+    "p8-ordinary" : 20.046875000000004,
+    "p8-straddle" : 64.406250000000014,
+    "p9-ordinary" : 35.586805555555564,
+    "p9-straddle" : 23.458333333333332
+  },
+  "totalPairedCandidateRotations" : 67200,
+  "totalSimulatedGames" : 76160,
+  "trainSelectedDifferenceBBPer100" : 4.2028356481481479,
+  "uniqueDealSeedsAcrossSplits" : 2496,
+  "validationSelectedDifferenceBBPer100" : 22.192264660493823
+}

@@ -1,0 +1,205 @@
+{
+  "ante" : 10,
+  "baseline" : {
+    "aggression" : 0.80000000000000004,
+    "callOffset" : 0,
+    "id" : "c9"
+  },
+  "bigBlind" : 50,
+  "bootstrapResamples" : 10000,
+  "bootstrapSeed" : "20260917999",
+  "candidates" : [
+    {
+      "aggression" : 0.20000000000000001,
+      "callOffset" : -0.20000000000000001,
+      "id" : "c0"
+    },
+    {
+      "aggression" : 0.80000000000000004,
+      "callOffset" : -0.20000000000000001,
+      "id" : "c1"
+    },
+    {
+      "aggression" : 1.3999999999999999,
+      "callOffset" : -0.20000000000000001,
+      "id" : "c2"
+    },
+    {
+      "aggression" : 2,
+      "callOffset" : -0.20000000000000001,
+      "id" : "c3"
+    },
+    {
+      "aggression" : 0.20000000000000001,
+      "callOffset" : -0.10000000000000001,
+      "id" : "c4"
+    },
+    {
+      "aggression" : 0.80000000000000004,
+      "callOffset" : -0.10000000000000001,
+      "id" : "c5"
+    },
+    {
+      "aggression" : 1.3999999999999999,
+      "callOffset" : -0.10000000000000001,
+      "id" : "c6"
+    },
+    {
+      "aggression" : 2,
+      "callOffset" : -0.10000000000000001,
+      "id" : "c7"
+    },
+    {
+      "aggression" : 0.20000000000000001,
+      "callOffset" : 0,
+      "id" : "c8"
+    },
+    {
+      "aggression" : 0.80000000000000004,
+      "callOffset" : 0,
+      "id" : "c9"
+    },
+    {
+      "aggression" : 1.3999999999999999,
+      "callOffset" : 0,
+      "id" : "c10"
+    },
+    {
+      "aggression" : 2,
+      "callOffset" : 0,
+      "id" : "c11"
+    },
+    {
+      "aggression" : 0.20000000000000001,
+      "callOffset" : 0.10000000000000001,
+      "id" : "c12"
+    },
+    {
+      "aggression" : 0.80000000000000004,
+      "callOffset" : 0.10000000000000001,
+      "id" : "c13"
+    },
+    {
+      "aggression" : 1.3999999999999999,
+      "callOffset" : 0.10000000000000001,
+      "id" : "c14"
+    },
+    {
+      "aggression" : 2,
+      "callOffset" : 0.10000000000000001,
+      "id" : "c15"
+    },
+    {
+      "aggression" : 0.20000000000000001,
+      "callOffset" : 0.20000000000000001,
+      "id" : "c16"
+    },
+    {
+      "aggression" : 0.80000000000000004,
+      "callOffset" : 0.20000000000000001,
+      "id" : "c17"
+    },
+    {
+      "aggression" : 1.3999999999999999,
+      "callOffset" : 0.20000000000000001,
+      "id" : "c18"
+    },
+    {
+      "aggression" : 2,
+      "callOffset" : 0.20000000000000001,
+      "id" : "c19"
+    }
+  ],
+  "createdAt" : "2026-09-16T16:47:14Z",
+  "experiment" : "synthetic-continuation-v1",
+  "heroRaiseCapPerStreet" : 2,
+  "opponents" : [
+    "station",
+    "selective",
+    "valuePressure",
+    "mixedPressure"
+  ],
+  "promotionRule" : "Validation mean > 0; fixed held-out test stratified cluster-bootstrap 95% lower endpoint > 0; means nonnegative in p6-ordinary,p8-ordinary,p8-straddle; zero legality\/conservation errors. This gates only synthetic continuation research, never automatic phone deployment.",
+  "scenarios" : [
+    {
+      "players" : 2,
+      "straddle" : false
+    },
+    {
+      "players" : 3,
+      "straddle" : false
+    },
+    {
+      "players" : 4,
+      "straddle" : false
+    },
+    {
+      "players" : 5,
+      "straddle" : false
+    },
+    {
+      "players" : 6,
+      "straddle" : false
+    },
+    {
+      "players" : 7,
+      "straddle" : false
+    },
+    {
+      "players" : 8,
+      "straddle" : false
+    },
+    {
+      "players" : 9,
+      "straddle" : false
+    },
+    {
+      "players" : 3,
+      "straddle" : true
+    },
+    {
+      "players" : 6,
+      "straddle" : true
+    },
+    {
+      "players" : 8,
+      "straddle" : true
+    },
+    {
+      "players" : 9,
+      "straddle" : true
+    }
+  ],
+  "scope" : "Production BehaviorProfile action policy only; NOT full decision engine, equity calibration or human strength",
+  "scriptRaiseCapPerStreet" : 4,
+  "selection" : "Top 3 train scores plus neutral enter validation; choose highest validation mean, tie prefer closest neutral. Freeze selected model before test. Run test once against neutral.",
+  "smallBlind" : 20,
+  "splits" : [
+    {
+      "independentDealsPerScenario" : 32,
+      "masterSeed" : "20260917001",
+      "name" : "train"
+    },
+    {
+      "independentDealsPerScenario" : 48,
+      "masterSeed" : "20260917002",
+      "name" : "validation"
+    },
+    {
+      "independentDealsPerScenario" : 128,
+      "masterSeed" : "20260917003",
+      "name" : "test"
+    }
+  ],
+  "stackAmounts" : [
+    1000,
+    3000,
+    5000,
+    3000,
+    5000,
+    1000,
+    75
+  ],
+  "straddleAmount" : 100,
+  "weights" : "Equal scenario weights; full seat-rotation mean within each independent deal; 50-chip big blind is score unit even with 100-chip straddle."
+}

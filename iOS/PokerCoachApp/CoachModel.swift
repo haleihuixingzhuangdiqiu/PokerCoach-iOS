@@ -975,6 +975,8 @@ final class CoachModel: ObservableObject {
                     try image.pngData()?.write(to: directory.appendingPathComponent("home-view.png"))
                 }
                 self.pip.setIdleScreen(false)
+                self.pip.updateReadout(title: "建议：加注到 7.40", subtitle: "摊牌独赢 58% · 2对手\n补 6.40 · 多人后续推演",
+                                       validThrough: ProcessInfo.processInfo.systemUptime + 60)
                 try await Task.sleep(for: .milliseconds(300))
                 try await self.pip.exportRenderProbe(to: directory.appendingPathComponent("inline"))
                 self.pip.start()
@@ -983,6 +985,25 @@ final class CoachModel: ObservableObject {
                     if self.pip.active || self.pip.error != nil { break }
                 }
                 try await self.pip.exportRenderProbe(to: directory.appendingPathComponent("floating"))
+                let samples = [
+                    ("call", "建议：跟注 3.20", "摊牌独赢 41% · 3名对手\n跟注的模型收益更高"),
+                    ("fold", "建议：弃牌", "摊牌独赢 12% · 2对手\n继续投入的模拟收益较低"),
+                    ("check", "建议：过牌", "摊牌独赢 100% · 1对手\n保留筹码"),
+                    ("large-amount", "建议：加注到 10000000.00", "摊牌独赢 100% · 1对手\n补 9999999.00"),
+                    ("reading", "第3张公共牌未读清", "字形未匹配 · 帮助中补牌"),
+                    ("disconnected", "录屏画面已中断", "回首页重新选择牌研录屏"),
+                    ("estimate", "随机独赢估计28%", "按最多7名对手 · 随机假设\n操作待确认 · 暂无动作建议")
+                ]
+                for (name, title, subtitle) in samples {
+                    self.pip.updateReadout(title: title, subtitle: subtitle, validThrough: ProcessInfo.processInfo.systemUptime + 60)
+                    try await Task.sleep(for: .milliseconds(200))
+                    try await self.pip.exportRenderProbe(to: directory.appendingPathComponent(name))
+                }
+                self.pip.updateReadout(title: "建议：跟注 3.20", subtitle: "摊牌独赢 41%", validThrough: ProcessInfo.processInfo.systemUptime - 1)
+                try await Task.sleep(for: .milliseconds(200))
+                try await self.pip.exportRenderProbe(to: directory.appendingPathComponent("expired"))
+                self.pip.updateReadout(title: "建议：加注到 7.40", subtitle: "摊牌独赢 58% · 2对手\n补 6.40 · 多人后续推演",
+                                       validThrough: ProcessInfo.processInfo.systemUptime + 60)
                 self.pip.stop()
                 try await Task.sleep(for: .seconds(1))
                 try await self.pip.exportRenderProbe(to: directory.appendingPathComponent("returned"))

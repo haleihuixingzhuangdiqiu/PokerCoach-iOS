@@ -46,14 +46,14 @@ struct HomeScreen: View {
                     Spacer(minLength: 20)
                     // Keep the real video source mounted at a stable, visible size across state changes.
                     ZStack {
-                        GuidancePreview(controller: pip).frame(width: width, height: width * 104 / 360)
+                        GuidancePreview(controller: pip).frame(width: width, height: width * PiPGuidanceController.contentSize.height / PiPGuidanceController.contentSize.width)
                             .allowsHitTesting(false).accessibilityLabel("悬浮指导预览")
                             .accessibilityIdentifier("guidance.preview")
                         if !model.captureConnection.canResumeGuidance {
                             BroadcastPickerView(title: model.isScreenCaptured ? "重新接入" : "开始", onTap: model.prepareToStart)
                                 .frame(width: 220, height: 68)
                         }
-                    }.frame(width: width, height: width * 104 / 360)
+                    }.frame(width: width, height: max(68, width * PiPGuidanceController.contentSize.height / PiPGuidanceController.contentSize.width))
                     ZStack {
                         if model.captureConnection.canResumeGuidance {
                             Button(action: model.resumeGuidance) {
@@ -83,12 +83,12 @@ struct HomeScreen: View {
                 if helpPage == 0 {
                     Text("开始 → 确认录屏 → 切回牌桌").font(.headline).foregroundStyle(green)
                     Text("点击「开始」，在系统面板选择「牌研录屏」，确认后切回牌桌。")
-                    Text("悬浮窗只有两行。拖到上方空位，避开公共牌；自己的底牌和底部操作按钮都要露出。")
+                    Text("悬浮窗只显示动作、金额和独赢估计。拖到上方空位，避开公共牌；双指收拢可缩小窗口，底牌和底部按钮都要露出。")
                     Text("关闭悬浮后点「继续连接」。没有画面时，先停止已有录屏，再点「重新接入」。")
                     Divider()
                     Text("读不清时会自动重试").font(.headline)
-                    Text("「第几张底牌／公共牌未读清」从左往右数。牌很清楚却持续失败时，到「补牌」选中对应小图，确认实际点数；也可纠正读错的字形。保持所给视频的海洋主题。")
-                    Text("「等待自己的底牌／公共牌」通常出现在发牌前或换手时；「等待新画面」表示画面过期，旧百分数会撤回。")
+                    Text("悬浮窗显示「读取中」时会自动重试。详细失败原因可在「当前状态」查看；牌很清楚却持续失败时，到「补牌」确认实际点数。保持所给视频的海洋主题。")
+                    Text("「下一手」表示上一手结束；「等画面」表示画面过期，旧动作和百分数已撤回。")
                 } else if helpPage == 1 {
                     Text("牌型：从小到大").font(.headline).foregroundStyle(green)
                     VStack(spacing: 7) {
@@ -105,8 +105,8 @@ struct HomeScreen: View {
                     Text("取底牌和公共牌中最好的五张；两张底牌同花色，还不叫五张「同花」。未成对也可能再发一张就变强。")
                         .font(.caption).foregroundStyle(.secondary)
                     Divider()
-                    Text("摊牌独赢 41%：假设显示的对手都留到摊牌，本人独自获胜的模型估计，平局另算。它不是采用推荐动作后赢下底池的概率。完整状态使用行动条件范围；局部快照使用等权范围假设，人数未确认会写「按最多」。模型尚未校准。")
-                    Text("建议：跟注 3.20＝再补 3.20；加注到 8.20＝本轮总投入达到 8.20；下注 1.80＝新投 1.80；过牌＝不加钱；弃牌＝放弃这手。金额沿用牌桌单位，策略理由与赢面同时显示。")
+                    Text("独赢≈41%：假设当前对手都留到摊牌，本人独自获胜的模型估计，平局另算；「随机≤7对手」表示最多七名对手、随机持牌假设。它不是执行推荐动作后赢池的概率，超过 50% 也不自动表示值得下注。人数、范围和具体原因见「当前状态」。")
+                    Text("跟 3.20＝再补 3.20；加至 8.20＝本轮总投入达到 8.20；下注 1.80＝新投 1.80；过牌＝不加钱；弃牌＝放弃这手。金额沿用牌桌单位。策略根据模型的预计筹码收益比较动作，仍未证明长期优势。")
                 } else if helpPage == 2 {
                     Text("当前读取结果").font(.headline).foregroundStyle(green)
                     Text("底牌：\(model.heroCards)\n公共牌：\(model.boardCards)")
@@ -118,7 +118,7 @@ struct HomeScreen: View {
                         .font(.footnote).foregroundStyle(.secondary)
                     Text("跟注门槛＝需补跟金额 ÷（当前底池＋需补跟金额）。只表示直接摊牌、无后续下注、无抽水且所有底池均有资格竞争时的盈亏平衡权益。")
                         .font(.caption).foregroundStyle(.secondary)
-                    Text("研究模型按期望收益比较可用动作。下注／加注仅支持翻后单挑，双方筹码和启用的金额按钮已确认；加注还需本街已投入额。不含对手再加注、后续街、边池和抽水；未验证能战胜真人。")
+                    Text("完整记录下，模型比较多人各街行动、再次加注和主池／边池收益；只有局部截图时会限制或撤回付费建议。金额必须来自确认可用的按钮。未包含抽水，也未验证能战胜真人。")
                         .font(.caption).foregroundStyle(.secondary)
                 } else {
                     RankLearningPanel(model: model)

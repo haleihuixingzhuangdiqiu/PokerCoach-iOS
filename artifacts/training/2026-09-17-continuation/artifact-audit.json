@@ -1,0 +1,15 @@
+{
+  "completeRotationBlocks": 11520,
+  "independentNormalApprox95BBPer100": [
+    13.832796878902787,
+    34.51439640813425
+  ],
+  "note": "Recomputes saved raw outcomes, not a second poker test or an independent rules/strength oracle.",
+  "rawPairedRows": 67200,
+  "recomputedTestDifferenceBBPer100": 24.17359664351852,
+  "selectedCandidate": "c11",
+  "sourceManifestMatches": true,
+  "testCandidateCount": 1,
+  "uniqueDealSeeds": 2496,
+  "verified": true
+}

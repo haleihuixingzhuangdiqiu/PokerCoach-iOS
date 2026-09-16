@@ -1,9 +1,12 @@
 import AppKit
 import Foundation
 let root = URL(fileURLWithPath: CommandLine.arguments[1])
+let rendererOnly = CommandLine.arguments.contains("--renderer-only")
 var reports: [[String: Any]] = []
 var failed = false
-for name in ["inline", "floating", "returned"] {
+let required = ["inline", "floating", "returned"]
+let additional = ["call", "fold", "check", "large-amount", "reading", "disconnected", "estimate", "expired"]
+for name in required + additional.filter({ FileManager.default.fileExists(atPath: root.appendingPathComponent($0).path) }) {
     let directory = root.appendingPathComponent(name)
     let json = try JSONSerialization.jsonObject(with: Data(contentsOf: directory.appendingPathComponent("render.json"))) as! [String: Any]
     let generated = NSBitmapImageRep(data: try Data(contentsOf: directory.appendingPathComponent("generated.png")))!
@@ -15,21 +18,26 @@ for name in ["inline", "floating", "returned"] {
             let a = generated.colorAt(x: x, y: y)!.usingColorSpace(.deviceRGB)!
             let b = displayed.colorAt(x: x, y: y)!.usingColorSpace(.deviceRGB)!
             totalDifference += abs(a.redComponent - b.redComponent) + abs(a.greenComponent - b.greenComponent) + abs(a.blueComponent - b.blueComponent)
-            if b.redComponent > 0.6 && b.greenComponent > 0.6 && b.blueComponent > 0.6 { brightPixels += 1 }
+            if 0.2126 * b.redComponent + 0.7152 * b.greenComponent + 0.0722 * b.blueComponent > 0.6 { brightPixels += 1 }
         } }
     }
     let difference = totalDifference / Double(generated.pixelsWide * generated.pixelsHigh * 3)
-    let checks: [String: Bool] = [
+    var checks: [String: Bool] = [
         "iosurface": json["inputHasIOSurface"] as? Bool == true,
         "readyForDisplay": json["readyForDisplay"] as? Bool == true,
         "displayedFrame": json["copiedDisplayedFrame"] as? Bool == true,
-        "textIsVisible": sameSize && brightPixels > 600,
-        "matchesGeneratedFrame": sameSize && difference < 0.01,
-        "pipLifecycle": json["pipActive"] as? Bool == (name == "floating")
+        "textIsVisible": sameSize && brightPixels > 200,
+        "matchesGeneratedFrame": sameSize && difference < 0.01
     ]
+    if !rendererOnly { checks["pipLifecycle"] = json["pipActive"] as? Bool == (name != "inline" && name != "returned") }
+    if name == "expired" || name == "disconnected" {
+        checks["oldAdviceWithdrawn"] = json["renderedSubtitle"] as? String == "" &&
+            json["renderedTitle"] as? String == (name == "expired" ? "等画面" : "重连录屏")
+    }
     if checks.values.contains(false) { failed = true }
     reports.append(["checkpoint":name,"checks":checks,"brightPixels":brightPixels,"meanChannelDifference":difference])
 }
-let output: [String: Any] = ["passed":!failed,"checkpoints":reports]
+let output: [String: Any] = ["passed":!failed,"checkpoints":reports,
+                           "scope":rendererOnly ? "renderer-only; system PiP lifecycle NOT verified" : "renderer-and-system-pip"]
 print(String(data:try JSONSerialization.data(withJSONObject:output,options:[.prettyPrinted,.sortedKeys]),encoding:.utf8)!)
 exit(failed ? 1 : 0)

@@ -1,0 +1,12 @@
+{
+  "automaticPhoneActivation" : false,
+  "scope" : "continuation-policy parameters only",
+  "selected" : {
+    "aggression" : 2,
+    "callOffset" : 0,
+    "id" : "c11"
+  },
+  "selectedAt" : "2026-09-16T16:47:17Z",
+  "selectionData" : "train + validation only",
+  "validationDifferenceBBPer100" : 22.192264660493823
+}

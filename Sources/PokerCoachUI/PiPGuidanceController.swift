@@ -7,9 +7,10 @@ import SwiftUI
 import UIKit
 import PokerCoachCore
 
-/// System PiP lifecycle and tiny two-line guidance surface. iOS controls its position and size.
+/// System PiP lifecycle and a single compact guidance strip. iOS controls its position and size.
 @MainActor
 public final class PiPGuidanceController: NSObject, ObservableObject {
+    public static let contentSize = CGSize(width: 320, height: 64)
     @Published public private(set) var active = false
     @Published public private(set) var possible = false
     @Published public private(set) var error: String?
@@ -20,7 +21,6 @@ public final class PiPGuidanceController: NSObject, ObservableObject {
     private var action: String?
     private var readout: (title: String, subtitle: String)?
     private var validThrough = 0.0
-    private var updatedAt = Date()
     private var cachedKey = ""
     private var cachedBuffer: CVPixelBuffer?
     private var generatedImage: UIImage?
@@ -32,6 +32,7 @@ public final class PiPGuidanceController: NSObject, ObservableObject {
     private var showsIdleScreen = true
     private var renderedTitle = ""
     private var renderedSubtitle = ""
+    private var systemRenderSize = CMVideoDimensions(width: 0, height: 0)
     private var renderSchedule = GuidanceRenderSchedule()
     private var enqueuedFrames = 0
     private var backpressureSkips = 0
@@ -78,6 +79,7 @@ public final class PiPGuidanceController: NSObject, ObservableObject {
             "failureFlushes": failureFlushes, "lastEnqueuedAge": lastEnqueuedAt.map { now - $0 } ?? -1,
             "idleScreen": showsIdleScreen, "readoutValid": validThrough >= now,
             "renderedTitle": renderedTitle, "renderedSubtitle": renderedSubtitle,
+            "systemRenderWidth": systemRenderSize.width, "systemRenderHeight": systemRenderSize.height,
             "lifecycle": lifecycle
         ]
     }
@@ -103,7 +105,7 @@ public final class PiPGuidanceController: NSObject, ObservableObject {
     }
     public func update(status: GuidanceStatus, action: String?, validThrough: Double) {
         readout = nil
-        self.status = status; self.action = action; self.validThrough = validThrough; updatedAt = Date()
+        self.status = status; self.action = action; self.validThrough = validThrough
         render()
     }
     /// Descriptive card analysis does not mark the action ledger complete or authorize a bet.
@@ -209,12 +211,13 @@ public final class PiPGuidanceController: NSObject, ObservableObject {
         let now = ProcessInfo.processInfo.systemUptime
         let fresh = now <= validThrough
         let ready = (status == .ready || readout != nil) && fresh
-        let title = fresh && readout != nil ? readout!.title : (ready ? (action ?? "分析中…") : (fresh ? status.rawValue : (validThrough == 0 ? "等待牌桌" : "等待新画面")))
-        let timestamp = updatedAt.formatted(.dateTime.hour().minute().second())
-        let subtitle = fresh && readout != nil ? readout!.subtitle : (ready ? "\(timestamp) · 研究估计" : (validThrough == 0 ? "请先开始录屏" : "确认牌面后更新"))
+        let rawTitle = fresh && readout != nil ? readout!.title : (ready ? (action ?? "分析中…") : (fresh ? status.rawValue : (validThrough == 0 ? "等待牌桌" : "等待新画面")))
+        let rawSubtitle = fresh && readout != nil ? readout!.subtitle : ""
+        let compact = CompactGuidanceReadout(title: rawTitle, subtitle: rawSubtitle)
+        let title = compact.primary, subtitle = compact.probability ?? ""
         // Include all visible properties, but never validity timestamps: a fresh observation
         // with the same text only extends its lifetime. The timer still notices expiry.
-        let key = showsIdleScreen ? "idle-white" : "\(ready)|\(title)\u{0}\(subtitle)"
+        let key = showsIdleScreen ? "idle-white" : "\(compact.isAction)|\(title)\u{0}\(subtitle)"
         let renderer = view.display.sampleBufferRenderer
         if renderer.status == .failed {
             let failure = renderer.error.map(String.init(describing:)) ?? "renderer failed without NSError"
@@ -228,7 +231,7 @@ public final class PiPGuidanceController: NSObject, ObservableObject {
         // and the latest readout; the next timer tick retries without flushing the queue.
         guard renderer.isReadyForMoreMediaData else { backpressureSkips += 1; return }
         if cachedKey != key || cachedBuffer == nil {
-            cachedBuffer = makePixels(title: title, subtitle: subtitle, ready: ready); cachedKey = key
+            cachedBuffer = makePixels(title: title, subtitle: subtitle, ready: compact.isAction); cachedKey = key
         }
         guard let pixels = cachedBuffer else { return }
         var format: CMVideoFormatDescription?
@@ -299,27 +302,30 @@ public final class PiPGuidanceController: NSObject, ObservableObject {
             .write(to: directory.appendingPathComponent("render.json"))
     }
     private func makePixels(title: String, subtitle: String, ready: Bool) -> CVPixelBuffer? {
-        let size = CGSize(width: 360, height: 104)
+        let size = Self.contentSize
         let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
         let image = UIGraphicsImageRenderer(size: size, format: format).image { c in
             if showsIdleScreen {
                 UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: size)); return
             }
             UIColor(red: 0.04, green: 0.09, blue: 0.10, alpha: 1).setFill(); c.fill(CGRect(origin: .zero, size: size))
-            let titleColor = ready ? UIColor(red: 0.59, green: 0.96, blue: 0.77, alpha: 1) : UIColor.white
-            func line(_ text: String, rect: CGRect, size: CGFloat, minimum: CGFloat, weight: UIFont.Weight, color: UIColor) {
+            let titleColor = ready ? UIColor(red: 0.59, green: 0.96, blue: 0.77, alpha: 1) : UIColor.lightGray
+            func line(_ text: String, rect: CGRect, size: CGFloat, minimum: CGFloat, weight: UIFont.Weight, color: UIColor, alignment: NSTextAlignment = .left) {
                 var fontSize = size
-                while fontSize > minimum && (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: fontSize, weight: weight)]).width > rect.width { fontSize -= 1 }
-                let paragraph = NSMutableParagraphStyle(); paragraph.lineBreakMode = .byTruncatingTail
-                (text as NSString).draw(in: rect, withAttributes: [.font: UIFont.systemFont(ofSize: fontSize, weight: weight), .foregroundColor: color, .paragraphStyle: paragraph])
+                while fontSize > minimum && (text as NSString).size(withAttributes: [.font: UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: weight)]).width > rect.width { fontSize -= 1 }
+                let font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: weight)
+                let paragraph = NSMutableParagraphStyle(); paragraph.lineBreakMode = .byClipping; paragraph.alignment = alignment
+                let aligned = CGRect(x: rect.minX, y: rect.midY - font.lineHeight / 2, width: rect.width, height: font.lineHeight)
+                (text as NSString).draw(in: aligned, withAttributes: [.font: font, .foregroundColor: color, .paragraphStyle: paragraph])
             }
-            line(title, rect: CGRect(x: 18, y: 10, width: 324, height: 36), size: 29, minimum: 21, weight: .bold, color: titleColor)
-            let details = subtitle.split(separator: "\n", maxSplits: 1, omittingEmptySubsequences: false)
-            if details.count == 2 {
-                line(String(details[0]), rect: CGRect(x: 19, y: 52, width: 322, height: 20), size: 15, minimum: 12, weight: .regular, color: .lightGray)
-                line(String(details[1]), rect: CGRect(x: 19, y: 76, width: 322, height: 18), size: 13, minimum: 11, weight: .regular, color: .lightGray)
+            if subtitle.isEmpty {
+                line(title, rect: CGRect(x: 12, y: 0, width: 296, height: 64), size: 26, minimum: 14,
+                     weight: .semibold, color: titleColor, alignment: .center)
             } else {
-                line(subtitle, rect: CGRect(x: 19, y: 64, width: 322, height: 24), size: 15, minimum: 12, weight: .regular, color: .lightGray)
+                line(title, rect: CGRect(x: 12, y: 0, width: 188, height: 64), size: 26, minimum: 12,
+                     weight: .bold, color: titleColor)
+                line(subtitle, rect: CGRect(x: 211, y: 0, width: 97, height: 64), size: 18, minimum: 12,
+                     weight: .medium, color: .white, alignment: .right)
             }
         }
         generatedImage = image
@@ -378,7 +384,10 @@ extension PiPGuidanceController: @preconcurrency AVPictureInPictureSampleBufferP
     public func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, setPlaying playing: Bool) {}
     public func pictureInPictureControllerTimeRangeForPlayback(_ pictureInPictureController: AVPictureInPictureController) -> CMTimeRange { CMTimeRange(start: .negativeInfinity, duration: .positiveInfinity) }
     public func pictureInPictureControllerIsPlaybackPaused(_ pictureInPictureController: AVPictureInPictureController) -> Bool { false }
-    public func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, didTransitionToRenderSize newRenderSize: CMVideoDimensions) {}
+    public func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, didTransitionToRenderSize newRenderSize: CMVideoDimensions) {
+        guard controller === pictureInPictureController else { return }
+        systemRenderSize = newRenderSize
+    }
     public func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, skipByInterval skipInterval: CMTime, completion completionHandler: @escaping () -> Void) { completionHandler() }
 }
 

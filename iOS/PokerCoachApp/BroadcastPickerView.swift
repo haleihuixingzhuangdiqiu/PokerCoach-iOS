@@ -107,7 +107,9 @@ final class PreparedBroadcastPickerView: RPSystemBroadcastPickerView {
         // 暴露一个辅助功能按钮，避免 VoiceOver 直接激活内部按钮而遗漏应用准备。
         button.isAccessibilityElement = false
         button.accessibilityElementsHidden = true
-        button.accessibilityIdentifier = "capture.start"
+        // The container exposes the single accessible start control. Some iOS
+        // accessibility snapshots still include this hidden UIKit child.
+        button.accessibilityIdentifier = nil
         styleButton()
     }
 
